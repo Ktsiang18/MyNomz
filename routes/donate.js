@@ -36,6 +36,7 @@ MongoClient.connect(url, function(err, database) {
 	  		else
 	    		console.log('Success');
 		})
+		res.sendFile(path.join(__dirname, '../public/nomzStuff', 'nomzHome.html'))
 	})
 
 /*

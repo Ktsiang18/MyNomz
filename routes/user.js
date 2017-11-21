@@ -64,26 +64,5 @@ router.post('/latlong', function(req, res, next) {
             console.log('Success');
     }
 })
-    /*router.get('/', function(req, res, next) {
-      res.render('index', { title: 'Express' })
-    })
-
-    router.get('/first', function(req, res) {
-      var query = { firstname : req.query.first}
-      console.log(query)
-        db.collection("users").find(query).toArray(function(err, result) {
-            if (err) throw err
-            console.log(result)
-        })
-    })
-
-    router.post('/', function (req, res) {
-        db.collection("users").insert({ "firstname" : req.body.fname, "lastname" : req.body.lname, "emotion" : req.body.emotion }, function(err, result) {
-            if (err)
-                console.log('Error')
-            else
-                console.log('Success');
-        })
-    })*/
 
 module.exports = router;

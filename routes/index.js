@@ -8,6 +8,14 @@ router.get('/styles.css', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../styles.css'))
 });
 
+router.get('/logIn.html', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../public/nomzStuff', 'logIn.html'))
+});
+
+router.get('/nomzHome.html', function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../public/nomzStuff', 'nomzHome.html'))
+});
+
 router.get('/img/nomzTitle.png', function(req, res, next) {
   res.sendFile(path.join(__dirname, '../public/nomzStuff/img', 'nomzTitle.png'))
 });
