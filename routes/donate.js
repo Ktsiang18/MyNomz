@@ -8,35 +8,41 @@ var user = require('./user')
 var db
 
 router.use(bodyParser.json())
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({
+  extended: true
+}))
 
-MongoClient.connect(url, function(err, database) {
-	if (err) throw err
-	else
-		db = database
+MongoClient.connect(url, function (err, database) {
+  if (err) throw err
+  else
+    db = database
 })
 
 
 /* GET home page. */
-	router.get('/', function(req, res, next) {
-	   console.log("userid: " + user.userid)
-	   res.sendFile(path.join(__dirname, '../public/nomzStuff', 'donate_pg.html'))
-	})
+router.get('/', function (req, res, next) {
+  console.log("userid: " + user.userid)
+  res.sendFile(path.join(__dirname, '../public/nomzStuff', 'donate_pg.html'))
+})
 
-	router.post('/', function (req, res) {
-		db.collection("users").updateOne(
-			{ _id: user.userid },
-			{ $set: 
-				{ "user type" : "posting", 
-				  "food post" : {"servings" : req.body.servings, "food type" : req.body.foodtype }
-				}
-			}, function(err, result) {
-			if (err)
-	     		console.log('Error')
-	  		else
-	    		console.log('Success');
-		})
-	})
+router.post('/', function (req, res) {
+  db.collection("users").updateOne({
+    _id: user.userid
+  }, {
+    $set: {
+      "user type": "posting",
+      "food post": {
+        "servings": req.body.servings,
+        "food type": req.body.foodtype
+      }
+    }
+  }, function (err, result) {
+    if (err)
+      console.log('Error')
+    else
+      console.log('Success');
+  })
+})
 
 /*
 	router.get('/first', function(req, res) {

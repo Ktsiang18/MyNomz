@@ -11,10 +11,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
   </script>
-   <link rel="stylesheet" href="styles.css">
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet">
-    
+  <link rel="stylesheet" href="styles.css">
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet">
     <style>
         .navbar{
           margin-bottom: 0;
@@ -38,7 +37,7 @@
           color:#D5D5D5;
       }
       
-    .about-section{
+      .about-section{
             background-color: #133C55;
             height: 400px;
             font-size: 110%;
@@ -126,6 +125,7 @@
     </style>
 </head>
 
+  <!------------------------------NAVIGATION----------------------------->
 <body>
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
@@ -135,7 +135,7 @@
               <span class = "icon-bar"></span>
               <span class = "icon-bar"></span>
           </button>
-          <img src = "img/nomzTitle.png" style="width:450px;height:128px;">
+          <img src = "/img/nomzTitle.png" style="width:450px;height:128px;">
         </div>
         <div class = "collapse navbar-collapse" id="myNavbar">
           <ul class = "nav navbar-nav navbar-right">
@@ -147,41 +147,41 @@
       </div>
     </nav>
     
+<!------------------------------SECTION HEADER----------------------------->
 <section id="new" class="new-section">
   <div class="container fluid">
     <div class="row">
       <div class="container text-center">
         <h1>Request</h1>
           <div class="container fluid">
-        <img src = "img/nomzBowl.png" id = "nomzBowl">
+        <img src = "/img/nomzBowl.png" id = "nomzBowl">
     </div>
   </div>
 </div>
 </div>
 </section>    
-    
-<div class= "container-fluid text-center" id = "requestDiv">
-     <form method="post">    
+  
+<!-----------INPUT FIELDS: SERVINGS, ALLERGIES, RADIUS-------------------->
+<div class= "container-fluid text-center" id = "requestDiv"> 
     <div class = "border row">
-             <div class="border col-xs-4".col-xs-4>
-               Number of Servings:<br>
-                 <input type="text" name="servings">
-                <br>
-               </div>     
-            <div class="border col-xs-4".col-xs-4>
-                 Allergies:<br>
-                    <input type="text" name="allergies" >
-                    <br><br>
-                <input type="submit" value="Submit" onclick = "window.location.href='nomzHome.html'">
-                </div>
-            <div class="border col-xs-4".col-xs-4>
-                 Search Radius:<br>
-                    <input type="text" name="searchRadius" >
-                    <br><br> 
-            </div>
-        </div>
-          </form>
+      <div class="border col-xs-4".col-xs-4>
+        Number of Servings:<br>
+          <input type="text" id="servings">
+        <br>
+      </div>     
+      <div class="border col-xs-4".col-xs-4>
+          Allergies:<br>
+            <input type="text" id="allergies" >
+          <br><br>
+          <input type="submit" value="Submit" onclick = "recordRequest()">
+      </div>
+      <div class="border col-xs-4".col-xs-4>
+          Search Radius:<br>
+            <input type="text" id="searchRadius" >
+          <br>
+      </div>
     </div>
+</div>
 
       
 <section id="about" class="about-section">
@@ -192,6 +192,38 @@
   </div>
     
 </body>
+<script>
+  //PARSE USER ID FROM URL
+    var url = location.href;
+    var id = url.split('request/')[1];
+  
+function recordRequest(){
+  var servings = document.getElementById("servings").value;
+  var allergies = document.getElementById("allergies").value;
+  var radius = document.getElementById("searchRadius").value;
+  var sendInfo = {
+    servings: servings,
+    allergies: allergies,
+    radius: radius
+  }
+  
+  console.log("sendInfo: ", sendInfo);
+
+     $.ajax({
+      type: "POST",
+      url: "/request/" + id,
+      data:sendInfo,
+      sucess:function(msg){
+        console.log("sucess");
+      },
+      error: function(jqXhr, textStatus, errorThrown) {
+        console.log(errorThrown);
+      }
+    });
+  window.location.href = '/home/'+ id;
+  }
+
+</script>
 </html>
 
 
