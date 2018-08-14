@@ -167,7 +167,7 @@
               <span class = "icon-bar"></span>
               <span class = "icon-bar"></span>
           </button>
-        <img src="img/nomzTitle.png" style="width:450px;height:128px;">
+        <img src="/img/nomzTitle.png" style="width:450px;height:128px;">
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
@@ -210,6 +210,16 @@
     var url = location.href;
     var id = url.split('home/')[1];
     var x = document.getElementById("demo");
+    var requests;
+    
+    //GETS QUERY FOR FOOD REQUESTS
+    function getRequests(cb) {
+      $.get("/home/request/" + id, cb);
+    }
+    
+    function getDonations(cb) {
+      $.get("/home/donations/" + id, cb);
+    }
 
     function getLocation() {
       if (navigator.geolocation) {
@@ -219,15 +229,14 @@
 
       }
     }
-
+    
+    //BUILD MAP AND SHOW MY POSITION
     function showPosition(position) {
       var lat = position.coords.latitude;
       var lon = position.coords.longitude;
       var latlon = new google.maps.LatLng(lat, lon);
 
       recordLocation(lat, lon);
-      //document.getElementById('hiddenField').value = latlon;
-      //document.getElementById("myForm").submit();
 
       var mapholder = document.getElementById('mapholder')
       mapholder.style.height = '400px';
@@ -243,57 +252,74 @@
       }
 
       var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
-
+      
+      //SHOW FOOD REQUESTS ON MAP
+      getRequests(function(data,status){
+        console.log("Data: ", data);
+        console.log("Status: ", status);
+      
+        data.forEach(function(item){
+          var newlatlong = new google.maps.LatLng(item.lat, item.lon);
+          var marker = new google.maps.Marker({
+            position: newlatlong,
+            map: map,
+            icon:'/bowlRed.png',
+            title: 'Request'
+          });
+          
+          var infowindow = new google.maps.InfoWindow({
+              content: "<h3> Name: "+ item.name +" <br> Servings: "
+                      + item.req_servings +"<br> Allergies: "
+                      + item.req_allergies +" </h3>"
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        });
+      });
+      
+      //SHOW FOOD DONATIONS ON MAP
+      getDonations(function(data,status){
+        console.log("Data: ", data);
+        console.log("Status: ", status);
+      
+        data.forEach(function(item){
+          var newlatlong = new google.maps.LatLng(item.lat, item.lon);
+          var marker = new google.maps.Marker({
+            position: newlatlong,
+            map: map,
+            icon:'/bagRed.png',
+            title: 'Donation'
+          });
+          
+          var infowindow = new google.maps.InfoWindow({
+              content: "<h3> Name: "+ item.name +" <br> Servings: "
+                      + item.donate_servings +"<br> Food: "
+                      + item.donate_type +" </h3>"
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        });
+      });
+      
+      //DISPLAYING CURRENT USER
       var marker0 = new google.maps.Marker({
         position: latlon,
         map: map,
-        icon: '/bagRed.png',
         title: 'You are here!'
       });
 
-      var marker1 = new google.maps.Marker({
-        position: {
-          lat: lat + 0.01,
-          lng: lon + 0.01
-        },
-        map: map,
-        icon: '/bowlRed.png',
-        title: 'You are here!'
-      });
-
-      var marker2 = new google.maps.Marker({
-        position: {
-          lat: lat + 0.01,
-          lng: lon - 0.01
-        },
-        map: map,
-        icon: '/bowlRed.png',
-        title: 'You are here!'
-      });
-      
       var infowindowM0 = new google.maps.InfoWindow({
-        content: "<h4> Me <br> Servings: 2 <br> Type of Food: Paninis </h4>"
-      });
-
-      var infowindowM1 = new google.maps.InfoWindow({
-        content: "<h3> Name: Jaclyn <br> Servings: 1<br> Allergies: none </h3>"
-      });
-
-      var infowindowM2 = new google.maps.InfoWindow({
-        content: "<h3> Name: Kim <br> Servings: 2 <br> Allergies: peanuts </h3>"
+        content: "You are here!"
       });
 
       google.maps.event.addListener(marker0, 'click', function() {
         infowindowM0.open(map, marker0);
       });
-      google.maps.event.addListener(marker1, 'click', function() {
-        infowindowM1.open(map, marker1);
-      });
-
-      google.maps.event.addListener(marker2, 'click', function() {
-        infowindowM2.open(map, marker2);
-      });
-
+   
     }
 
     function recordLocation(lat, long) {
@@ -356,12 +382,12 @@
     <div class="border row">
       <div class="border col-xs-6" .col-xs-6>
         <button onclick="donatePage()"> 
-          <img src = "img/donate.png" id = "icon">
+          <img src = "/home/img/donate.png" id = "icon">
         </button>
       </div>
       <div class="border col-xs-6" .col-xs-6>
         <button onclick="requestPage()">
-          <img src= "img/request.png" id = "icon">
+          <img src= "/home/img/request.png" id = "icon">
         </button>
       </div>
     </div>

@@ -8,6 +8,7 @@ var donate = require('./routes/donate')
 var request = require('./routes/request')
 var server = require('http').createServer(app);
 
+app.use('/', index)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
@@ -88,9 +89,9 @@ app.post('/request/:id', function (req, res){
     '_id': req.params.id
   }, {
     $set: {
-      allergies: req.body.allergies,
-      servings: req.body.servings,
-      radius: req.body.radius
+      req_allergies: req.body.allergies,
+      req_servings: req.body.servings,
+      req_radius: req.body.radius
     }
   }, function (err) {
         if (err) 
@@ -118,9 +119,27 @@ app.post('/donate/:id', function (req, res){
       });
 });
 
+//GET LOCATIONS AND REQUESTS/DONATIONS
+app.get('/home/:type/:id', function(req, res){
+    
+    if(req.params.type == 'request'){
+      var fields = 'name req_allergies req_servings req_radius';
+      var query = {req_servings: {$ne:null}};
+    } 
+    else {
+      var fields = 'name donate_servings donate_type';
+      var query = {donate_type: {$ne:null}};
+    }
+  
+    User.find(query, function(err, docs){
+      if(err) throw err;
+      console.log("data retrieve success: ", docs);
+       res.send(docs);
+    });
+
+});
 
 //app.use('/', user)
-app.use('/', index)
 //app.use('/donate_pg.html', donate)
 //app.use('/request_pg.html', request)
 
