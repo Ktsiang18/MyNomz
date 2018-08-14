@@ -2,13 +2,10 @@ var express = require('express')
 var path = require('path')
 var app = express()
 var bodyParser = require('body-parser')
-var index = require('./routes/index')
-//var user = require('./routes/user')
-var donate = require('./routes/donate')
-var request = require('./routes/request')
+var routes = require('./routes')
 var server = require('http').createServer(app);
 
-app.use('/', index)
+app.use('/', routes)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
   extended: false
@@ -128,7 +125,7 @@ app.get('/home/:type/:id', function(req, res){
     } 
     else {
       var fields = 'name donate_servings donate_type';
-      var query = {donate_type: {$ne:null}};
+      var query = {donate_type: {$ne: null}};
     }
   
     User.find(query, function(err, docs){
@@ -138,10 +135,6 @@ app.get('/home/:type/:id', function(req, res){
     });
 
 });
-
-//app.use('/', user)
-//app.use('/donate_pg.html', donate)
-//app.use('/request_pg.html', request)
 
 app.listen(process.env.PORT || 8000, function () {
   console.log("Listening on port 8000")

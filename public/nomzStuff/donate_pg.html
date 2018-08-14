@@ -140,6 +140,7 @@
 </head>
 
 <body>
+  <!------------------------------NAVIGATION----------------------------->
   <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -152,9 +153,10 @@
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active"><a href="#" onclick="window.location.href='nomzHome.html'">Home</a></li>
-          <li><a href="#" onclick="window.location.href='login.html'">Log In</a></li>
-          <li><a href="#">About</a></li>
+          <li class="active"><a href="#" onclick="homePage()">Home</a></li>
+          <li><a href="#" onclick="window.location.href='/'">Log In</a></li>
+          <li><a href="#" onclick =  "requestPage()">Request</a></li>
+          <li><a href="#" onclick = "donatePage()">Donate</a></li>
         </ul>
       </div>
     </div>
@@ -191,7 +193,7 @@
       <input type="submit" value="Submit" onclick="recordDonation()">
   </div>
 
-
+  <!------------------------------ABOUT SECTION----------------------------->
   <section id="about" class="about-section">
     <div class="container fluid">
       <div class="container-fluid text-center">
@@ -227,6 +229,18 @@ function recordDonation(){
       }
     });
   window.location.href = '/home/'+ id;
-}  
+}
+  
+function donatePage(){
+  location.href = '/donate/' + id;
+}
+    
+function requestPage(){
+  location.href = '/request/' + id;
+}
+
+function homePage(){
+  location.href = '/home/' + id;
+}
 </script>
 </html>
