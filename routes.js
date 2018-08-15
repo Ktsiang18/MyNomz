@@ -6,7 +6,7 @@ var path = require('path');
 
 //ROUTE TO PAGES
 router.get('/home/:id', function(req, res){
-  res.sendFile(path.join(__dirname, '/nomzHome.html'));
+  res.sendFile(path.join(__dirname, '/geolocation.html'));
 });
 
 router.get('/donate/:id', function(req, res){
@@ -19,6 +19,10 @@ router.get('/request/:id', function(req, res){
   res.sendFile(path.join(__dirname, '../MyNomz/public/nomzStuff', 'request_pg.html'));
 });
 
+router.get('/styles.css', function(req, res){
+  console.log ("getting style sheet");
+  res.sendFile(path.join(__dirname, '../MyNomz/public/stylesheets', 'styles.css'));
+});
 
 
 //HOME PAGE IMAGES

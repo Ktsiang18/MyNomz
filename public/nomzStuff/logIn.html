@@ -176,45 +176,34 @@
 </style>
 
 <body>
-
+  <!-------------------------------INTRO PAGE------------------------------------>
   <div class="container-fluid text-center">
     <h2>Welcome to</h2>
     <img src="img/nomzTitle.png">
     <button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
   </div>
-
-
-
-
+  <!-------------------------------LOGIN MODAL------------------------------------>
   <div id="id01" class="modal">
-
     <form class="modal-content animate" method="post">
       <div class="imgcontainer">
         <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
         <img src="img/nomzBowl.png" alt="Hello!" class="avatar">
       </div>
-
       <div class="container">
         <form method="post" action="/">
           <label><b>Name</b></label>
           <input type="text" placeholder="Enter Username" name="uname" required>
-
-          <input onclick="window.location.href='nomzHome.html'" type="submit" value="Signup/Login">
-          <input type="checkbox" checked="checked"> Remember me
+          <button type = "submit">Let's Get Started!</button>
         </form>
-
         <div class="container">
           <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
         </div>
       </div>
     </form>
   </div>
-
   <script>
-    // Get the modal
-    var modal = document.getElementById('id01');
-
     // When the user clicks anywhere outside of the modal, close it
+    var modal = document.getElementById('id01');
     window.onclick = function(event) {
       if (event.target == modal) {
         modal.style.display = "none";

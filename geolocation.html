@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Cabin+Sketch" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css"> 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+</script>
+
+<!------------------------------NAVIGATION----------------------------->
+<head>
+  <title>Nomz Home</title>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class = "icon-bar"></span>
+              <span class = "icon-bar"></span>
+              <span class = "icon-bar"></span>
+          </button>
+        <img src="/img/nomzTitle.png" style="width:450px;height:128px;">
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active"><a href="#" onclick="homePage()'">Home</a></li>
+          <li><a href="#" onclick="window.location.href='/'">Log In</a></li>
+          <li><a href="#" onclick =  "requestPage()">Request</a></li>
+          <li><a href="#" onclick = "donatePage()">Donate</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</head>
+<body>
+  
+<!------------------------------GEOLOCATION MAP DIV----------------------------->
+  <div id="mapholder"></div>
+<!------------------------------DONATE/REQUEST LINKS----------------------------->
+  <div class="container-fluid">
+    <div class="border row">
+      <div class="border col-xs-6" .col-xs-6>
+        <button onclick="donatePage()"> 
+          <img src = "/home/img/donate.png" id = "icon">
+        </button>
+      </div>
+      <div class="border col-xs-6" .col-xs-6>
+        <button onclick="requestPage()">
+          <img src= "/home/img/request.png" id = "icon">
+        </button>
+      </div>
+    </div>
+  </div>
+  <!------------------------------ABOUT SECTION----------------------------->
+  <section id="about" class="about-section">
+    <div class="container fluid">
+      <div class="container-fluid text-center">
+        <p> Over 41 million people struggle with hunger in the US alone, yet as a country we continue on a trend of increasing food waste. Statistics show upwards of 40% of our produce and other foodstuffs goes to waste annually. Nomz makes addressing world hunger more accessible by connecting those with leftovers to those in need. Nomz aims to de-stigmatize hunger by making an accessible platform that allows people to donate or request food in a much more casual interaction compared to going to a shelter or food bank. Use our convenient mapping and messaging system to make a difference today! </p>
+      </div>
+    </div>
+  </section>
+</body>
+
+  <!------------------------------GOOGLE MAP API IMPLEMENTATION----------------------------->
+
+  <script>
+    //PARSE USER ID FROM URL
+    var url = location.href;
+    var id = url.split('home/')[1];
+    var x = document.getElementById("demo");
+    var requests;
+    
+    //CALLS QUERY FOR FOOD REQUESTS
+    function getRequests(callback) {
+      $.get("/home/request/" + id, callback);
+    }
+    
+    //CALLS QUERY FOR FOOD DONATIONS
+    function getDonations(callback) {
+      $.get("/home/donations/" + id, callback);
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+
+      }
+    }
+    
+    //BUILD MAP AND SHOW POSITION
+    function showPosition(position) {
+      var lat = position.coords.latitude;
+      var lon = position.coords.longitude;
+      var latlon = new google.maps.LatLng(lat, lon);
+
+      recordLocation(lat, lon);
+
+      var mapholder = document.getElementById('mapholder')
+      mapholder.style.height = '400px';
+
+      var myOptions = {
+        center: latlon,
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeControl: false,
+        navigationControlOptions: {
+          style: google.maps.NavigationControlStyle.SMALL
+        }
+      }
+
+      var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
+      
+      //SHOW FOOD REQUESTS ON MAP
+      getRequests(function(data,status){
+        console.log("Data: ", data);
+        console.log("Status: ", status);
+      
+         //LOOPS THROUGH USERS, DISPLAYS ICONS/INFOWINDOWS ON MAP
+        data.forEach(function(item){
+          var newlatlong = new google.maps.LatLng(item.lat, item.lon);
+          var marker = new google.maps.Marker({
+            position: newlatlong,
+            map: map,
+            icon:'/bowlRed.png',
+            title: 'Request'
+          });
+          
+          var infowindow = new google.maps.InfoWindow({
+              content: "<h3> Name: "+ item.name +" <br> Servings: "
+                      + item.req_servings +"<br> Allergies: "
+                      + item.req_allergies +" </h3>"
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        });
+      });
+      
+      //SHOW FOOD DONATIONS ON MAP
+      getDonations(function(data,status){
+        console.log("Data: ", data);
+        console.log("Status: ", status);
+      
+        //LOOPS THROUGH USERS, DISPLAYS ICONS/INFOWINDOWS ON MAP
+        data.forEach(function(item){
+          var newlatlong = new google.maps.LatLng(item.lat, item.lon);
+          var marker = new google.maps.Marker({
+            position: newlatlong,
+            map: map,
+            icon:'/bagRed.png',
+            title: 'Donation'
+          });
+          
+          var infowindow = new google.maps.InfoWindow({
+              content: "<h3> Name: "+ item.name +" <br> Servings: "
+                      + item.donate_servings +"<br> Food: "
+                      + item.donate_type +" </h3>"
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+          });
+        });
+      });
+      
+      //DISPLAYING CURRENT USER
+      var marker0 = new google.maps.Marker({
+        position: latlon,
+        map: map,
+        title: 'You are here!'
+      });
+
+      var infowindowM0 = new google.maps.InfoWindow({
+        content: "You are here!"
+      });
+
+      google.maps.event.addListener(marker0, 'click', function() {
+        infowindowM0.open(map, marker0);
+      });
+   
+    }
+
+    function recordLocation(lat, long) {
+      console.log(id);
+      var sendInfo = {
+        lat: lat,
+        lon: long
+      }
+
+      $.ajax({
+        type: "POST",
+        url: "/home/" + id,
+        dataType: "json",
+        data: sendInfo,
+        sucess: function(msg) {
+          console.log("sucess")
+        },
+        error: function(jqXhr, textStatus, errorThrown) {
+          console.log(errorThrown);
+        }
+      });
+    }
+
+    function showError(error) {
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          x.innerHTML = "User denied the request for Geolocation."
+          break;
+        case error.POSITION_UNAVAILABLE:
+          x.innerHTML = "Location information is unavailable."
+          break;
+        case error.TIMEOUT:
+          x.innerHTML = "The request to get user location timed out."
+          break;
+        case error.UNKNOWN_ERROR:
+          x.innerHTML = "An unknown error occurred."
+          break;
+      }
+    }
+    
+    //PAGE DIRECTING
+    function donatePage(){
+      location.href = '/donate/' + id;
+    }
+    
+    function requestPage(){
+      location.href = '/request/' + id;
+    }
+    
+    function homePage(){
+      location.href = '/home/' + id;
+    }
+
+  </script>
+  <script src="https://maps.google.com/maps/api/js?key=AIzaSyB6lnbDEzPovukwAlq4A85xErnye2YxIyA&callback=getLocation"></script>
+
+  
+  
+</html>
