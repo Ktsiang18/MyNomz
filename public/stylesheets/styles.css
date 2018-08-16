@@ -1,0 +1,140 @@
+.navbar {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #393E41;
+    color: #FFF;
+    padding: 1% 0;
+    font-size: 1.2 em;
+    border: 0;
+  }
+
+  .navbar-brand {
+    float: left;
+    max-height: 50px;
+    padding: 0 15px 5px;
+  }
+
+  .navbar-inverse .navbar-nav .active a,
+  .navbar-inverse .navbar-nav .active a:focus,
+  .navbar-inverse .navbar-nav .active a:hover,
+    {
+    color: #FFF;
+    background-color: #5E4485;
+  }
+
+  .navbar-inverse .navbar-nav li a {
+    color: #D5D5D5;
+  }
+
+  .new-section {
+    height: 100%;
+    text-align: center;
+    background: #eee;
+    padding-bottom: 22px;
+  }
+
+  .about-section {
+    background-color: #133C55;
+  }
+
+  .cadetblue {
+    background-color: cadetblue;
+  }
+
+  .carousel-caption {
+    top: 50%;
+    transform: translateY(-90%);
+    text-transform: uppercase;
+
+  }
+
+  .btn {
+    font-family: 'Source Sans Pro', sans-serif;
+    width: 100 font-size: 18px;
+    color: azure;
+    background: #133C55;
+
+  }
+
+  div#mapholder {
+    margin: 0 auto 0 auto;
+  }
+
+  #icon {
+    max-height: 300px margin: 1% auto;
+  }
+
+  #about {
+    padding-top: 15px;
+    padding-bottom: 100px;
+  }
+
+  #welcome {
+    margin-bottom: 0;
+    border-radius: 0;
+    background-color: #506C64;
+    width: auto;
+  }
+
+  @media(max-width: 600px) {
+    .carousel-caption {
+      display: none;
+    }
+  }
+
+  #map {
+    height: 600px;
+  }
+
+  h1 {
+    font-family: 'Cabin Sketch', cursive;
+    font-size: 90px;
+    font-weight: 500;
+    line-height: 20px;
+    padding-bottom: 30px;
+    color: #506C64;
+  }
+
+  h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 100%;
+    color: azure;
+    padding-bottom: 22px;
+  }
+
+  h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 120%;
+    color: #506C64;
+    position: relative;
+  }
+
+  h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 120%;
+    color: #587291;
+    position: relative;
+  }
+
+  p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 120%;
+    color: azure;
+    position: relative;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 15%);
+    padding-bottom: 12px;
+  }
+
+  img {
+    width: 100%;
+    /* or any custom size */
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .carousel-inner {
+    height: 350px;
+  }
