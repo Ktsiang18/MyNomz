@@ -5,3 +5,5 @@ World hunger is often something we associate with starving people in third world
 We implemented Nomz using Node.js, Express, MongoDB for the backend and Bootstrap for the frontend, and it is deployed on Heroku.
 
 Link: sharenomz.herokuapp.com
+
+![](nomzScreenShot.png)
