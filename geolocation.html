@@ -88,15 +88,21 @@
         navigator.geolocation.getCurrentPosition(showPosition, showError);
       } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
-
       }
     }
     
     //BUILD MAP AND SHOW POSITION
     function showPosition(position) {
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var latlon = new google.maps.LatLng(lat, lon);
+      if(position){
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var latlon = new google.maps.LatLng(lat, lon);
+      }
+      else{
+        var lat = 37.4419
+        var lon = -122.1430
+        var latlon = new google.maps.LatLng(lat, lon);
+      }
 
       recordLocation(lat, lon);
 
@@ -182,6 +188,39 @@
 
       google.maps.event.addListener(marker0, 'click', function() {
         infowindowM0.open(map, marker0);
+      });
+      
+      //DEMO MARKER 1: DISPLAY DUMMY DONATION MARKER
+      var marker1latlon = new google.maps.LatLng(lat+.005, lon + .001);
+      var marker1 = new google.maps.Marker({
+        position: marker1latlon,
+        map: map,
+        icon:'/bagRed.png',
+        title: 'Donation'
+      });
+      console.log("printing marker 1")
+      var infowindowM1 = new google.maps.InfoWindow({
+          content: "<h3> Name: Brandon <br> Servings: 3 <br> Food: Hot Sandwiches</h3>"
+      });
+          
+      google.maps.event.addListener(marker1, 'click', function() {
+          infowindowM1.open(map, marker1);
+      });
+      
+      //DEMO MARKER 2: DISPLAY DUMMY REQUEST MARKER
+      var marker2latlon = new google.maps.LatLng(lat-.005, lon - .005);
+      var marker2 = new google.maps.Marker({
+        position: marker2latlon,
+        map: map,
+        icon:'/bowlRed.png',
+        title: 'Request'
+      });
+      var infowindowM2 = new google.maps.InfoWindow({
+              content: "<h3> Name: Emily <br> Servings: 2<br> Allergies: Nuts </h3>"
+      });
+          
+      google.maps.event.addListener(marker2, 'click', function() {
+          infowindowM2.open(map, marker2);
       });
    
     }
