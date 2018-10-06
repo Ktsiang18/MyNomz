@@ -84,10 +84,11 @@
     }
 
     function getLocation() {
+      showPosition(null)
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition, showError);
       } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
+        showPosition(null);
       }
     }
     
@@ -103,9 +104,6 @@
         var lon = -122.14300
         var latlon = new google.maps.LatLng(lat, lon);
       }
-      var lat = position.coords.latitude;
-      var lon = position.coords.longitude;
-      var latlon = new google.maps.LatLng(lat, lon);
 
       recordLocation(lat, lon);
 
