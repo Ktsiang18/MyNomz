@@ -6,4 +6,3 @@ Nomz aims to destigmitize hunger and combat waste by connecting those with lefto
 
 Nomz implements Google's Geolocation API to locate the closest donors and receivers. We used Node.js, Express, and MongoDB for the backend, Bootstrap, HTML, CSS, and Javascript for the frontend, Heroku for deployment. 
 
-Link: sharenomz.herokuapp.com
