@@ -1,4 +1,6 @@
-# Nomz Web App:
+# Nomz Web App: 
+
+### Link:sharenomz.herokuapp.com
 
 ![nomzscreenshot](https://user-images.githubusercontent.com/32723996/45583496-8dd91280-b917-11e8-8ceb-4a7542c7486b.png)
 
